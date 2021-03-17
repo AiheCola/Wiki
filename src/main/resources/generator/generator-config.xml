@@ -40,7 +40,8 @@
                              targetPackage="com.lihuan.wiki.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="test"/>
+        <!--<table tableName="test"/>-->
+        <table tableName="ebook"/>
         <!--<table tableName="ebook"/>-->
         <!--<table tableName="category"/>-->
         <!--<table tableName="doc"/>-->
