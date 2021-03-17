@@ -21,18 +21,20 @@ public class EbookService {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         criteria.andNameLike("%" + req.getName() + "%");
+
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
-        /*//将Ebook转换成EbookResponse返回
+        /*
         List<EbookResp> respList = new ArrayList<>();
         for (Ebook ebook : ebookList) {
             *//*EbookResp ebookResp = new EbookResp();
             BeanUtils.copyProperties(ebook,ebookResp);*//*
             //ebookResp.setId(123L); //此方法每个都要设置
+            转换单个对象
             EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
             respList.add(ebookResp);
         }*/
-        //将Ebook转换成EbookResponse返回
+        //将Ebook转换成EbookResponse返回 转换列表
         List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
 
         return list;
