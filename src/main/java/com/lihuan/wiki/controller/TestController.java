@@ -1,15 +1,19 @@
 package com.lihuan.wiki.controller;
 
+import com.lihuan.wiki.domain.Test;
 import com.lihuan.wiki.service.TestService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 //@Controller 返回一个页面
+@RequestMapping("/test")
 public class TestController {
 
     //可自己添加配置项，SpringBoot会自己读取配置项，冒号后是默认，没读取到会使用默认
@@ -38,8 +42,8 @@ public class TestController {
         return "Hello World! post," + name;
     }
 
-    /*@GetMapping("/test/list")
+    @GetMapping("/list")
     public List<Test> list(){
         return testService.list();
-    }*/
+    }
 }
