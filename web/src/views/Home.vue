@@ -9,7 +9,7 @@
                 style="height: 100%"
         >
           <a-sub-menu key="sub1">
-            <template v-slot:title><a-icon type="user" />subnav 1111</template>
+            <template v-slot:title><a-icon type="user" />subnav 1</template>
             <a-menu-item key="1">
               option1
             </a-menu-item>
