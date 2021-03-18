@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/home.vue'
 import About from '../views/about.vue'
+import AdminEbook from '../views/admin/admin-ebook.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,7 +20,12 @@ const routes: Array<RouteRecordRaw> = [
     *component: () => import(/!* webpackChunkName: "about" *!/ '../views/about.vue')
     * 懒加载方式
     * */
-  }
+  },
+  {
+    path: '/admin/admin-ebook',
+    name: 'AdminEbook',
+    component: AdminEbook
+  },
 ]
 
 const router = createRouter({
