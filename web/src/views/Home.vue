@@ -57,12 +57,6 @@
       </a-layout-sider>
       <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
         <a-list item-layout="vertical" size="large" :grid="{ gutter: 16, column: 3 }" :data-source="ebooks">
-          <template #footer>
-            <div>
-              <b>Wiki base</b>
-              footer part
-            </div>
-          </template>
           <template #renderItem="{ item }">
             <a-list-item key="item.name">
               <template #actions>
@@ -114,7 +108,7 @@ export default defineComponent({
     /*const ebooks1 =reactive({books:[]});*/
 
     onMounted(() => {
-      axios.get("http://localhost:8880/ebook/list").then((response) =>{
+      axios.get("/ebook/list").then((response) =>{
         const data = response.data;
         ebooks.value = data.content;
         /*ebooks1.books = data.content;*/
