@@ -103,7 +103,6 @@ for (let i = 0; i < 23; i++) {
 export default defineComponent({
   name: 'Home',
   setup(){
-    console.log("111");
     const ebooks =ref();
     /*const ebooks1 =reactive({books:[]});*/
 
@@ -112,8 +111,6 @@ export default defineComponent({
         const data = response.data;
         ebooks.value = data.content;
         /*ebooks1.books = data.content;*/
-
-        console.log(response);
       });
     });
 
