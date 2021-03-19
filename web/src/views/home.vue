@@ -83,10 +83,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted,ref,} from 'vue';
+import { defineComponent, onMounted,ref,reactive,toRef} from 'vue';
 import axios from 'axios';
 
-const listData: any = [];
+/*const listData: any = [];
 
 for (let i = 0; i < 23; i++) {
   listData.push({
@@ -98,29 +98,33 @@ for (let i = 0; i < 23; i++) {
     content:
             'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
   });
-}
+}*/
 
 export default defineComponent({
   name: 'Home',
   setup(){
     const ebooks =ref();
-    /*const ebooks1 =reactive({books:[]});*/
+    const ebooks1 =reactive({books:[]});
 
     onMounted(() => {
-      axios.get("/ebook/list").then((response) =>{
-        const data = response.data;
-        ebooks.value = data.content;
-        /*ebooks1.books = data.content;*/
+      axios.get("/ebook/list", {
+        params: {
+          page: 1,
+          size: 1000
+        }
+      }).then((response) => {
+        const  data = response.data;
+        ebooks.value = data.content.list;
       });
     });
 
     /*html代码要拿到响应式变量，需要在setup后return*/
     return {
       ebooks,
-      /*ebooks2: toRef(ebooks1,"books")*/
-      listData,
+      //ebooks2: toRef(ebooks1,"books"),
+      //listData,
       pagination: {
-        onChange: (page: number) => {
+        onChange: (page: any) => {
           console.log(page);
         },
         pageSize: 3,
