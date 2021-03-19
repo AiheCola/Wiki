@@ -7,7 +7,6 @@
               :columns="columns"
               :data-source="ebooks"
               :row-key="record => record.id"
-              :data-source="ebooks"
               :pagination="pagination"
               :loading="loading"
               @change="handleTableChange"
