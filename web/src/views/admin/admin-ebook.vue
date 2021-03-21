@@ -1,12 +1,11 @@
 <template>
-
   <a-layout>
     <a-layout-content :style="{padding: '24px',
                       background: '#fff', margin: 0, minHeight: '300px'}">
       <a-table
               :columns="columns"
-              :data-source="ebooks"
               :row-key="record => record.id"
+              :data-source="ebooks"
               :pagination="pagination"
               :loading="loading"
               @change="handleTableChange"
@@ -42,12 +41,11 @@
       <a-form-item label="名称">
         <a-input v-model:value="ebook.name" />
       </a-form-item>
-      <a-form-item label="分类">
-        <a-cascader
-                v-model:value="categoryIds"
-                :field-names="{ label: 'name', value: 'id', children: 'children' }"
-                :options="level1"
-        />
+      <a-form-item label="分类一">
+        <a-input v-model:value="ebook.category1Id" />
+      </a-form-item>
+      <a-form-item label="分类二">
+        <a-input v-model:value="ebook.category2Id" />
       </a-form-item>
       <a-form-item label="描述">
         <a-input v-model:value="ebook.description" type="textarea" />
@@ -60,6 +58,7 @@
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import axios from 'axios';
+  import {message} from "ant-design-vue";
 
   export default defineComponent({
     name: 'AdminEbook',
@@ -67,7 +66,7 @@
       const ebooks = ref();
       const pagination = ref({
         current: 1,
-        pageSize: 4,
+        pageSize: 10,
         total: 0
       });
       const loading = ref(false);
@@ -83,14 +82,7 @@
           dataIndex: 'name'
         },
         {
-          title: '分类一',
-          key: 'category1Id',
-          dataIndex: 'category1Id',
-          slots: {customRender: 'category'}
-        },
-        {
-          title: '分类二',
-          dataIndex: 'category2Id',
+          title: '分类',
           slots: {customRender: 'category'}
         },
         {
@@ -103,7 +95,7 @@
         },
         {
           title: '点赞数',
-          dataIndex: 'voteCount'
+          dataIndex: 'viewLike'
         },
         {
           title: 'Action',
@@ -121,7 +113,7 @@
         axios.get("/ebook/list", {
           params: {
             page: params.page,
-            size: params.size
+            size: params.size,
           }
         }).then((response) => {
           loading.value = false;
@@ -153,17 +145,36 @@
       const modalLoading = ref(false);
       const handleModalOk = () => {
         modalLoading.value = true;
-        setTimeout(() => {
+
+        axios.post("/ebook/save", ebook.value).then((response) => {
+          modalLoading.value = false;
+          const data = response.data;
+          if (data.success) {
+            modalVisible.value = false;
+            modalLoading.value = false;
+
+            //重新加载列表
+            handleQuery({
+              page: pagination.value.current,
+              size: pagination.value.pageSize
+            });
+          } else {
+            message.error(data.message);
+          }
+        });
+      };
+
+      const handleModalCancel = () => {
         modalVisible.value = false;
         modalLoading.value = false;
-        }, 2000);
-      };
+      }
 
       /**
        * 编辑
        */
       const edit = (record: any) => {
         modalVisible.value = true;
+        ebook.value = record;
       };
 
       onMounted(() => {
@@ -185,9 +196,9 @@
         ebook,
         modalVisible,
         modalLoading,
-        handleModalOk
+        handleModalOk,
+        handleModalCancel
       }
     }
   });
-
 </script>

@@ -1,6 +1,7 @@
 <template>
     <a-layout-header class="header">
-        <div class="logo" />
+        <div class="logo" >
+        </div>
         <a-menu
                 theme="dark"
                 mode="horizontal"
