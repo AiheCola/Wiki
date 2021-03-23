@@ -2,11 +2,22 @@
   <a-layout>
     <a-layout-content :style="{padding: '24px',
                       background: '#fff', margin: 0, minHeight: '300px'}">
-      <p>
-        <a-button type="primary" @click="add()" size="large">
-          新增
-        </a-button>
-      </p>
+      <a-form :model="param">
+        <a-form-item>
+          <a-input-search v-model:value="param.name"
+                          placeholder="请输入查询信息"
+                          enter-button="查询"
+                          size="large"
+                          @search="handleQuery({page: 1, size: pagination.pageSize})"
+          />
+        </a-form-item>
+        <a-form-item>
+          <a-button type="primary" @click="add()" size="large">
+            新增
+          </a-button>
+        </a-form-item>
+      </a-form>
+
       <a-table
               :columns="columns"
               :row-key="record => record.id"
@@ -75,6 +86,8 @@
   export default defineComponent({
     name: 'AdminEbook',
     setup() {
+      const param = ref();
+      param.value = {};
       const ebooks = ref();
       const pagination = ref({
         current: 1,
@@ -126,6 +139,7 @@
           params: {
             page: params.page,
             size: params.size,
+            name: param.value.name
           }
         }).then((response) => {
           loading.value = false;
@@ -167,8 +181,6 @@
           const data = response.data;
           if (data.success) {
             modalVisible.value = false;
-            modalLoading.value = false;
-
             //重新加载列表
             handleQuery({
               page: pagination.value.current,
@@ -193,7 +205,7 @@
         ebook.value = record;
       };
       /**
-       * x新增
+       * 新增
        */
       const add = () => {
         modalVisible.value = true;
@@ -224,10 +236,12 @@
 
       return {
         ebooks,
+        param,
         pagination,
         columns,
         loading,
         handleTableChange,
+        handleQuery,
 
         edit,
         add,
