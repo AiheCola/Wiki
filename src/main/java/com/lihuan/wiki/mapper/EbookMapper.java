@@ -3,7 +3,6 @@ package com.lihuan.wiki.mapper;
 import com.lihuan.wiki.domain.Ebook;
 import com.lihuan.wiki.domain.EbookExample;
 import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 public interface EbookMapper {
