@@ -2,6 +2,11 @@
   <a-layout>
     <a-layout-content :style="{padding: '24px',
                       background: '#fff', margin: 0, minHeight: '300px'}">
+      <p>
+        <a-button type="primary" @click="add()" size="large">
+          新增
+        </a-button>
+      </p>
       <a-table
               :columns="columns"
               :row-key="record => record.id"
@@ -18,9 +23,16 @@
             <a-button type="primary" @click="edit(record)" >
               编辑
             </a-button>
-            <a-button type="danger">
-              删除
-            </a-button>
+            <a-popconfirm
+                    title="删除不可恢复，确认删除?"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="handleDelete(record.id)"
+            >
+              <a-button type="danger">
+                删除
+              </a-button>
+            </a-popconfirm>
           </a-space>
         </template>
       </a-table>
@@ -176,6 +188,28 @@
         modalVisible.value = true;
         ebook.value = record;
       };
+      /**
+       * x新增
+       */
+      const add = () => {
+        modalVisible.value = true;
+        ebook.value = {};
+      };
+
+      const handleDelete = (id : number) => {
+        axios.delete("/ebook/delete/" + id).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            //重新加载列表
+            handleQuery({
+              page: pagination.value.current,
+              size: pagination.value.pageSize
+            });
+          } else {
+            message.error(data.message);
+          }
+        });
+      }
 
       onMounted(() => {
         handleQuery({
@@ -192,12 +226,14 @@
         handleTableChange,
 
         edit,
+        add,
 
         ebook,
         modalVisible,
         modalLoading,
         handleModalOk,
-        handleModalCancel
+        handleModalCancel,
+        handleDelete,
       }
     }
   });
