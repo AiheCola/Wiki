@@ -21,7 +21,7 @@
       <a-table
               :columns="columns"
               :row-key="record => record.id"
-              :data-source="categorys"
+              :data-source="level1"
               :pagination="false"
               :loading="loading"
       >
@@ -83,11 +83,6 @@
       const param = ref();
       param.value = {};
       const categorys = ref();
-      const pagination = ref({
-        current: 1,
-        pageSize: 10,
-        total: 0
-      });
       const loading = ref(false);
 
       const columns = [
@@ -95,11 +90,11 @@
           title: '名称',
           dataIndex: 'name'
         },
-        {
+        /*{
           title: '父分类',
           key: 'parent',
           dataIndex: 'parent'
-        },
+        },*/
         {
           title: '顺序',
           dataIndex: 'sort'
@@ -112,16 +107,36 @@
       ];
 
       /**
+       * 一级分类树，children属性就是二级分类
+       * [{
+       *   id: "",
+       *   name: "",
+       *   children: [{
+       *     id: "",
+       *     name: "",
+       *   }]
+       * }]
+       */
+      const level1 = ref(); // 一级分类树，children属性就是二级分类
+      level1.value = [];
+
+      /**
        * 数据查询
        **/
       const handleQuery = () => {
         loading.value = true;
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+        level1.value = [];
         axios.get("/category/all").then((response) => {
           loading.value = false;
           const data = response.data;
           if (data.success) {
             categorys.value = data.content;
+            console.log("原始数组：", categorys.value);
+
+            level1.value = [];
+            level1.value = Tool.array2Tree(categorys.value, 0);
+            console.log("树形结构：", level1);
           } else {
             message.error(data.message);
           }
@@ -187,9 +202,8 @@
       });
 
       return {
-        categorys,
+        level1,
         param,
-        pagination,
         columns,
         loading,
         handleQuery,
