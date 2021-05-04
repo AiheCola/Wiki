@@ -2,8 +2,8 @@ package com.lihuan.wiki.controller;
 
 import com.lihuan.wiki.req.CategoryQueryReq;
 import com.lihuan.wiki.req.CategorySaveReq;
-import com.lihuan.wiki.resp.CommonResp;
 import com.lihuan.wiki.resp.CategoryQueryResp;
+import com.lihuan.wiki.resp.CommonResp;
 import com.lihuan.wiki.resp.PageResp;
 import com.lihuan.wiki.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
@@ -48,4 +48,5 @@ public class CategoryController {
         categoryService.delete(id);
         return resp;
     }
+
 }

@@ -53,12 +53,12 @@ public class CategoryService {
         pageResp.setList(list);
         return pageResp;
     }
-    //查询
+    //查询全部
     public List<CategoryQueryResp> all(){
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.setOrderByClause("sort asc");
         List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
-
+        //列表复制
         List<CategoryQueryResp> list = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
         return list;
     }
